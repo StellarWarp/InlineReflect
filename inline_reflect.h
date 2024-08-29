@@ -64,20 +64,22 @@ namespace inline_reflect::details
         using attributes = Attributes;
     };
 
-    template<auto Func,
-            typename Attributes>
+    template<auto MemberFunc, typename Attributes>
     struct method_info;
 
-    template<typename ClassType, typename Ret, typename... Args,
-            Ret (ClassType::* MemberFunc)(Args...),
+    template<typename ClassType,
+            typename FuncT,
+            FuncT ClassType::* MemberFunc,
             typename Attributes>
     struct method_info<MemberFunc, Attributes> : member_info_tag
     {
         static constexpr auto ptr = MemberFunc;
         static constexpr auto name = method_name_of<MemberFunc>();
         using class_type = ClassType;
-        using member_function_type = Ret(ClassType::*)(Args...);
-        using function_type = Ret(Args...);
+        using member_function_type = decltype(MemberFunc);
+        using decay_member_function_type = function_traits<member_function_type>::decay_member_function_type;
+        using function_type = FuncT;
+        using decay_function_type = function_traits<member_function_type>::decay_function_type;
         using attributes = Attributes;
     };
     template<auto Func, static_string Name, typename Attributes>
@@ -124,7 +126,7 @@ namespace inline_reflect::details
     template<typename ClassType,
             typename T,
             T ClassType::* MemberVar,
-            typename Attributes>
+            typename Attributes> requires std::is_member_object_pointer_v<decltype(MemberVar)>
     struct inline_reflect_impl<MemberVar, Attributes>
     {
         using info_t = field_info<MemberVar, Attributes>;
@@ -133,9 +135,12 @@ namespace inline_reflect::details
         >::template set<info_t{}>;
         static constexpr auto _ = setter_t();
     };
-    template<typename ClassType, typename Ret, typename... Args,
-            Ret (ClassType::* MemberFunc)(Args...),
-            typename Attributes>
+
+    template<typename ClassType,
+            typename FuncT,
+            FuncT ClassType::* MemberFunc,
+            typename Attributes
+            > requires std::is_member_function_pointer_v<decltype(MemberFunc)>
     struct inline_reflect_impl<MemberFunc, Attributes>
     {
         using info_t = method_info<MemberFunc, Attributes>;
