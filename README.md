@@ -2,6 +2,14 @@
 
 A header-only util that allows writing reflection code within the class
 
+to import the code run
+
+```shell
+git subtree add --prefix <path-to-folder> https://github.com/StellarWarp/InlineReflect.git inline_reflect --squash
+```
+
+## usage
+
 ```c++
 class MyClass
 {
