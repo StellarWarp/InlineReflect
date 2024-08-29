@@ -31,7 +31,7 @@ void auto_serialize(std::basic_ostream<Ch, Tr>& os, T& c)
 class MyClass
 {
     using this_class = MyClass;
-    float w;
+    volatile const float w;
     ANON_TYPE = member_reflect<&this_class::w>;
 
     int x;
@@ -49,13 +49,13 @@ public:
     void set_y(int y) { this->y = y; }
 
     ANON_TYPE = member_reflect<&this_class::set_x, &this_class::set_y>;
-    struct t {};
 
-    void set_t(t tt) {}
+    struct t {};
+    void set_t(t tt) const volatile & noexcept{}
 
     ANON_TYPE = member_reflect<&this_class::set_t>;
 
-    static int static_func(int x, int y) { return x + y; }
+    static int static_func(int x, int y) noexcept { return x + y; }
 
     ANON_TYPE = static_func_reflect<MyClass, &MyClass::static_func>;
 
@@ -71,7 +71,8 @@ int main()
         using type = Info::type;
         using attributes = Info::attributes;
         auto name = info.name;
-        std::print(std::cout, "{} = {} : {:10s}", name, x, raw_name_of<type>());
+        using remove_v = std::remove_volatile_t<type>;
+        std::print(std::cout, "{} = {} : {:10s}", name, (remove_v)x, raw_name_of<type>());
         for_each_attribute(attributes(), [&]<typename Attr>(Attr)
         {
             std::print(std::cout, " {}", raw_name_of<Attr>());
@@ -101,10 +102,15 @@ int main()
             object_info<MyClass>::methods{},
             []<typename FieldInfo>(meta::type_wrapper<FieldInfo>)
             {
-                using type = FieldInfo::function_type;
+                using function_type = FieldInfo::function_type;
+                using decay_function_type = FieldInfo::decay_function_type;
+                using member_function_type = FieldInfo::member_function_type;
+                using decay_member_function_type = FieldInfo::decay_member_function_type;
                 auto name = FieldInfo::name;
                 using attributes = FieldInfo::attributes;
-                std::print(std::cout, "{:15s} : {:30s}", name, raw_name_of<type>());
+                std::print(std::cout, "{:15s} : {:50s} {:30s}",
+                           name, raw_name_of<function_type>(),
+                           raw_name_of<decay_function_type>());
                 for_each_attribute(attributes(), [&]<typename Attr>(Attr)
                 {
                     std::print(std::cout, " {}", raw_name_of<Attr>());
