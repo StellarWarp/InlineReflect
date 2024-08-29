@@ -11,6 +11,8 @@ git subtree add --prefix <path-to-folder> https://github.com/StellarWarp/InlineR
 ## usage
 
 ```c++
+struct serialize_filed {};
+
 class MyClass
 {
     using this_class = MyClass;
