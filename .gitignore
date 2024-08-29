@@ -1,0 +1,17 @@
+# Xmake cache
+.xmake/
+build/
+cmake-build-*/
+.cache/
+.vs/
+vs2022/
+debug/
+out/
+
+
+# MacOS Cache
+.DS_Store
+
+
+/vsxmake2022/
+/gitsubtree_util.py

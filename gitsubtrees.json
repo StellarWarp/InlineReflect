@@ -1,0 +1,10 @@
+{
+  "subtrees": {
+    "inline_reflect": {
+      "prefix": "src/inline_reflect",
+      "repo_urls": [],
+      "branch": "inline_reflect",
+      "this_repo": true
+    }
+  }
+}
