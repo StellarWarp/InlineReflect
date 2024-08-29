@@ -1,6 +1,6 @@
 # Inline Reflect
 
-A header-only util that allows writing reflection code within the class
+A C++20 header-only util that allows writing reflection code within the class
 
 to import the code run
 
