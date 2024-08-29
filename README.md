@@ -54,12 +54,12 @@ for_each_field(c, []<typename Info>(auto&& x, Info info)
     using attributes = Info::attributes;
     auto name = info.name;
     using remove_v = std::remove_volatile_t<type>;
-    std::print(std::cout, "{} = {} : {:10s}", name, (remove_v)x, raw_name_of<type>());
+    print(std::cout, "{} = {} : {:10s}", name, (remove_v)x, raw_name_of<type>());
     for_each_attribute(attributes(), [&]<typename Attr>(Attr)
     {
-        std::print(std::cout, " {}", raw_name_of<Attr>());
+        print(std::cout, " {}", raw_name_of<Attr>());
     });
-    std::println(std::cout, "");
+    println(std::cout, "");
 });
 ```
 output
@@ -80,12 +80,12 @@ for_each_type(
             using type = FieldInfo::type;
             auto name = FieldInfo::name;
             using attributes = FieldInfo::attributes;
-            std::print(std::cout, "{:15s} : {:10s}", name, raw_name_of<type>());
+            print(std::cout, "{:15s} : {:10s}", name, raw_name_of<type>());
             for_each_attribute(attributes(), [&]<typename Attr>(Attr)
             {
-                std::print(std::cout, " {}", raw_name_of<Attr>());
+                print(std::cout, " {}", raw_name_of<Attr>());
             });
-            std::println(std::cout, "");
+            println(std::cout, "");
         });
 for_each_type(
         object_info<MyClass>::methods{},
@@ -94,17 +94,17 @@ for_each_type(
             using function_type = FieldInfo::function_type;
             using decay_function_type = FieldInfo::decay_function_type;
             using member_function_type = FieldInfo::member_function_type;
-            using decay_member_function_type = FieldInfo::decay_member_function_type;
+            using decay_member_function_type = FieldInfo::decay_member_functi
             auto name = FieldInfo::name;
             using attributes = FieldInfo::attributes;
-            std::print(std::cout, "{:15s} : {:50s} {:30s}",
+            print(std::cout, "{:15s} : {:50s} {:30s}",
                        name, raw_name_of<function_type>(),
                        raw_name_of<decay_function_type>());
             for_each_attribute(attributes(), [&]<typename Attr>(Attr)
             {
-                std::print(std::cout, " {}", raw_name_of<Attr>());
+                print(std::cout, " {}", raw_name_of<Attr>());
             });
-            std::println(std::cout, "");
+            println(std::cout, "");
         });
 for_each_type(
         object_info<MyClass>::static_methods{},
@@ -113,12 +113,12 @@ for_each_type(
             using type = FieldInfo::function_type;
             auto name = FieldInfo::name;
             using attributes = FieldInfo::attributes;
-            std::print(std::cout, "{:15s} : {:30s}", name, raw_name_of<type>());
+            print(std::cout, "{:15s} : {:30s}", name, raw_name_of<type>());
             for_each_attribute(attributes(), [&]<typename Attr>(Attr)
             {
-                std::print(std::cout, " {}", raw_name_of<Attr>());
+                print(std::cout, " {}", raw_name_of<Attr>());
             });
-            std::println(std::cout, "");
+            println(std::cout, "");
         });
 
 ```

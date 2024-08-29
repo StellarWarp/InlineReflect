@@ -1,5 +1,8 @@
 #include "inline_reflect/inline_reflect.h"
 
+#include <format>
+#include <iostream>
+
 using namespace inline_reflect;
 
 struct serialize_filed {};
@@ -62,6 +65,15 @@ public:
     MyClass(int x, int y, int z) : w(0), x(x), y(y), z(z) {}
 };
 
+
+#if __cplusplus < 202400
+#define print(os, ...) os << std::format( __VA_ARGS__ );
+#define println(os, ...) os << std::format( __VA_ARGS__ ) << std::endl;
+#else
+using print = std::print;
+using println = std::println;
+#endif
+
 int main()
 {
     MyClass c{1, 2, 3};
@@ -72,18 +84,18 @@ int main()
         using attributes = Info::attributes;
         auto name = info.name;
         using remove_v = std::remove_volatile_t<type>;
-        std::print(std::cout, "{} = {} : {:10s}", name, (remove_v)x, raw_name_of<type>());
+        print(std::cout, "{} = {} : {:10s}", name, (remove_v)x, raw_name_of<type>());
         for_each_attribute(attributes(), [&]<typename Attr>(Attr)
         {
-            std::print(std::cout, " {}", raw_name_of<Attr>());
+            print(std::cout, " {}", raw_name_of<Attr>());
         });
-        std::println(std::cout, "");
+        println(std::cout, "");
     });
     std::cout << "serialize : ";
     auto_serialize(std::cout, c);
     std::cout << std::endl;
 
-    std::println(std::cout, "\niterate through properties");
+    println(std::cout, "\niterate through properties");
     for_each_type(
             object_info<MyClass>::fields{},
             []<typename FieldInfo>(meta::type_wrapper<FieldInfo>)
@@ -91,12 +103,12 @@ int main()
                 using type = FieldInfo::type;
                 auto name = FieldInfo::name;
                 using attributes = FieldInfo::attributes;
-                std::print(std::cout, "{:15s} : {:10s}", name, raw_name_of<type>());
+                print(std::cout, "{:15s} : {:10s}", name, raw_name_of<type>());
                 for_each_attribute(attributes(), [&]<typename Attr>(Attr)
                 {
-                    std::print(std::cout, " {}", raw_name_of<Attr>());
+                    print(std::cout, " {}", raw_name_of<Attr>());
                 });
-                std::println(std::cout, "");
+                println(std::cout, "");
             });
     for_each_type(
             object_info<MyClass>::methods{},
@@ -108,14 +120,14 @@ int main()
                 using decay_member_function_type = FieldInfo::decay_member_function_type;
                 auto name = FieldInfo::name;
                 using attributes = FieldInfo::attributes;
-                std::print(std::cout, "{:15s} : {:50s} {:30s}",
+                print(std::cout, "{:15s} : {:50s} {:30s}",
                            name, raw_name_of<function_type>(),
                            raw_name_of<decay_function_type>());
                 for_each_attribute(attributes(), [&]<typename Attr>(Attr)
                 {
-                    std::print(std::cout, " {}", raw_name_of<Attr>());
+                    print(std::cout, " {}", raw_name_of<Attr>());
                 });
-                std::println(std::cout, "");
+                println(std::cout, "");
             });
     for_each_type(
             object_info<MyClass>::static_methods{},
@@ -124,17 +136,17 @@ int main()
                 using type = FieldInfo::function_type;
                 auto name = FieldInfo::name;
                 using attributes = FieldInfo::attributes;
-                std::print(std::cout, "{:15s} : {:30s}", name, raw_name_of<type>());
+                print(std::cout, "{:15s} : {:30s}", name, raw_name_of<type>());
                 for_each_attribute(attributes(), [&]<typename Attr>(Attr)
                 {
-                    std::print(std::cout, " {}", raw_name_of<Attr>());
+                    print(std::cout, " {}", raw_name_of<Attr>());
                 });
-                std::println(std::cout, "");
+                println(std::cout, "");
             });
 
 
     auto info = reflect_info<MyClass>();
-    std::println(std::cout, "fields {} \nmethods {} \nstatic methods {}",
+    println(std::cout, "fields {} \nmethods {} \nstatic methods {}",
                  info.var_info, info.method_info, info.static_method_info);
 }
 
