@@ -29,7 +29,7 @@ namespace inline_reflect::meta
 		template <size_t I> using get = typename get_helper<I, T...>::type;
 
 		using remove_ref = type_list<std::remove_reference_t<T>...>;
-		using decay_type = typename type_list<std::decay_t<T>...>;
+		using decay_type = type_list<std::decay_t<T>...>;
 
 	private:
 		template <typename U>

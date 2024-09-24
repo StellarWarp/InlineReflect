@@ -1,6 +1,11 @@
 [
 {
   "directory": "C:\\Users\\Estelle\\source\\repos\\InlineReflect",
-  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\Llvm\\x64\\bin\\clang-cl.exe", "-c", "-m64", "-Zi", "-FS", "-Fdbuild\\windows\\x64\\debug\\compile.InlineReflect.pdb", "-Od", "-std:c++20", "/EHsc", "-Fobuild\\.objs\\InlineReflect\\windows\\x64\\debug\\src\\main.cpp.obj", "src\\main.cpp"],
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\Llvm\\x64\\bin\\clang-cl.exe", "-c", "-m64", "-Zi", "-FS", "-Fdbuild\\windows\\x64\\debug\\compile.Forwarding.pdb", "-Od", "-std:c++20", "/EHsc", "/Zc:__cplusplus", "-Fobuild\\.objs\\Forwarding\\windows\\x64\\debug\\src\\forwarding.cpp.obj", "src\\forwarding.cpp"],
+  "file": "src\\forwarding.cpp"
+},
+{
+  "directory": "C:\\Users\\Estelle\\source\\repos\\InlineReflect",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\Llvm\\x64\\bin\\clang-cl.exe", "-c", "-m64", "-Zi", "-FS", "-Fdbuild\\windows\\x64\\debug\\compile.InlineReflect.pdb", "-Od", "-std:c++20", "/EHsc", "/Zc:__cplusplus", "-Fobuild\\.objs\\InlineReflect\\windows\\x64\\debug\\src\\main.cpp.obj", "src\\main.cpp"],
   "file": "src\\main.cpp"
 }]

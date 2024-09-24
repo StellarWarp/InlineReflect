@@ -54,7 +54,8 @@ public:
     ANON_TYPE = member_reflect<&this_class::set_x, &this_class::set_y>;
 
     struct t {};
-    void set_t(t tt) const volatile & noexcept{}
+
+    void set_t(t tt) const volatile& noexcept {}
 
     ANON_TYPE = member_reflect<&this_class::set_t>;
 
@@ -76,6 +77,8 @@ using println = std::println;
 
 int main()
 {
+
+
     MyClass c{1, 2, 3};
 
     for_each_field(c, []<typename Info>(auto&& x, Info info)
@@ -84,7 +87,7 @@ int main()
         using attributes = Info::attributes;
         auto name = info.name;
         using remove_v = std::remove_volatile_t<type>;
-        print(std::cout, "{} = {} : {:10s}", name, (remove_v)x, raw_name_of<type>());
+        print(std::cout, "{} = {} : {:10s}", name, (remove_v) x, raw_name_of<type>());
         for_each_attribute(attributes(), [&]<typename Attr>(Attr)
         {
             print(std::cout, " {}", raw_name_of<Attr>());
@@ -121,8 +124,8 @@ int main()
                 auto name = FieldInfo::name;
                 using attributes = FieldInfo::attributes;
                 print(std::cout, "{:15s} : {:50s} {:30s}",
-                           name, raw_name_of<function_type>(),
-                           raw_name_of<decay_function_type>());
+                      name, raw_name_of<function_type>(),
+                      raw_name_of<decay_function_type>());
                 for_each_attribute(attributes(), [&]<typename Attr>(Attr)
                 {
                     print(std::cout, " {}", raw_name_of<Attr>());
@@ -147,7 +150,8 @@ int main()
 
     auto info = reflect_info<MyClass>();
     println(std::cout, "fields {} \nmethods {} \nstatic methods {}",
-                 info.var_info, info.method_info, info.static_method_info);
+            info.var_info, info.method_info, info.static_method_info);
 }
+
 
 
